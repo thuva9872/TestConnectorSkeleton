@@ -49,7 +49,7 @@ jobs:
           version: ${{ env.BAL_VERSION }}
 
       - name: Pull mi-module-gen tool
-        run: bal tool pull mi_module_gen
+        run: bal tool pull mi-module-gen
 
       - name: Pull connector from Ballerina Central
         run: bal pull ballerinax/${{ github.event.inputs.connector_name }}
@@ -99,8 +99,8 @@ jobs:
           echo "output_dir=$OUTPUT_DIR" >> $GITHUB_OUTPUT
           
           # Run mi-module-gen tool
-          echo "Running: bal mi_module_gen -i $CONNECTOR_PATH -t $OUTPUT_DIR"
-          bal mi_module_gen -i "$CONNECTOR_PATH" -t "$OUTPUT_DIR"
+          echo "Running: bal mi-module-gen -i $CONNECTOR_PATH -t $OUTPUT_DIR"
+          bal mi-module-gen -i "$CONNECTOR_PATH" -t "$OUTPUT_DIR"
           
           # List generated files
           echo "Generated files:"
