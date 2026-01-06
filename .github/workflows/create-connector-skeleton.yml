@@ -969,9 +969,6 @@ jobs:
           # Copy skeleton files (excluding .git)
           cp -r ../skeleton-output/. .
           
-          # Remove .gitkeep files if directories have content
-          find . -name ".gitkeep" -type f -delete 2>/dev/null || true
-          
           echo "✅ Skeleton files copied"
 
       - name: Commit changes
