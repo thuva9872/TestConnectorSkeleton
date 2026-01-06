@@ -117,7 +117,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
         run: |
-          TARGET_REPO="wso2-extensions/${{ github.event.inputs.target_repo_name }}"
+          TARGET_REPO="thuva9872/${{ github.event.inputs.target_repo_name }}"
           CONNECTOR_NAME="${{ github.event.inputs.connector_name }}"
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           BRANCH_NAME="feature/generate-${CONNECTOR_NAME}-connector"
