@@ -825,7 +825,7 @@ jobs:
                 - name: Checkout
                   uses: actions/checkout@v2.3.3
                   with:
-                    token: $\{{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
+                    token: SECRETS_WSO2_INTEGRATION_BOT_TOKEN
                     fetch-depth: 0
 
                 - name: Set up JDK 11
@@ -852,16 +852,16 @@ jobs:
                             <servers>
                               <server>
                                 <id>nexus-releases</id>
-                                <username>${\{ secrets.NEXUS_USERNAME }}</username>
-                                <password>${\{ secrets.NEXUS_PASSWORD }}</password>
+                                <username>SECRETS_NEXUS_USERNAME</username>
+                                <password>SECRETS_NEXUS_PASSWORD</password>
                               </server>
                             </servers>
                           </settings>" > ~/.m2/settings.xml
 
                 - name: Configure git credentials
                   run: |
-                    git config --global user.name $\{{ secrets.WSO2_INTEGRATION_BOT_USERNAME }}
-                    git config --global user.email $\{{ secrets.WSO2_INTEGRATION_BOT_EMAIL }}
+                    git config --global user.name SECRETS_WSO2_INTEGRATION_BOT_USERNAME
+                    git config --global user.email SECRETS_WSO2_INTEGRATION_BOT_EMAIL
 
                 - name: Build artifacts
                   run: |
@@ -869,24 +869,29 @@ jobs:
 
                 - name: Deploy artifacts with Maven
                   env:
-                    GITHUB_TOKEN: $\{{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
+                    GITHUB_TOKEN: SECRETS_WSO2_INTEGRATION_BOT_TOKEN
                   run: |
-                    mvn --batch-mode release:prepare release:perform -Dtag=$\{{ env.VERSION_TAG }} -Darguments="-Dmaven.javadoc.skip=true"
+                    mvn --batch-mode release:prepare release:perform -Dtag=ENV_VERSION_TAG -Darguments="-Dmaven.javadoc.skip=true"
 
                 - name: Create Github Release with Assets
                   env:
-                    GITHUB_TOKEN: $\{{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
+                    GITHUB_TOKEN: SECRETS_WSO2_INTEGRATION_BOT_TOKEN
                   run: |
                     find target/ -type f -name '*-SNAPSHOT.zip' -exec rm -f {} \;
-                    gh release create "$\{{ env.VERSION_TAG }}" \
+                    gh release create "ENV_VERSION_TAG" \
                       --repo="$GITHUB_REPOSITORY" \
-                      --title="${\{ env.VERSION_TAG }}" \
+                      --title="ENV_VERSION_TAG" \
                       --generate-notes \
                       target/*.zip
           RELEASEEOF
           
-          # Remove the backslash escapes to get proper ${{ }} syntax in the output file
-          sed -i 's/\$\\{/\$\{/g' skeleton-output/.github/workflows/publish-release.yml
+          # Replace placeholders with actual GitHub Actions syntax
+          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_TOKEN/${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}/g' skeleton-output/.github/workflows/publish-release.yml
+          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_USERNAME/${{ secrets.WSO2_INTEGRATION_BOT_USERNAME }}/g' skeleton-output/.github/workflows/publish-release.yml
+          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_EMAIL/${{ secrets.WSO2_INTEGRATION_BOT_EMAIL }}/g' skeleton-output/.github/workflows/publish-release.yml
+          sed -i 's/SECRETS_NEXUS_USERNAME/${{ secrets.NEXUS_USERNAME }}/g' skeleton-output/.github/workflows/publish-release.yml
+          sed -i 's/SECRETS_NEXUS_PASSWORD/${{ secrets.NEXUS_PASSWORD }}/g' skeleton-output/.github/workflows/publish-release.yml
+          sed -i 's/ENV_VERSION_TAG/${{ env.VERSION_TAG }}/g' skeleton-output/.github/workflows/publish-release.yml
 
       - name: Add placeholder files for empty directories
         run: |
