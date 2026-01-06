@@ -1,0 +1,49 @@
+{
+  "connectorName": "test-connector",
+  "connectionName": "Test Connector",
+  "title": "Test Connector Connection",
+  "help": "Configure connection to Test Connector",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "connectionName",
+        "displayName": "Connection Name",
+        "inputType": "stringOrExpression",
+        "required": true,
+        "helpTip": "Unique name to identify the connection."
+      }
+    },
+    {
+      "type": "attribute",
+      "value": {
+        "name": "baseUrl",
+        "displayName": "Base URL",
+        "inputType": "stringOrExpression",
+        "required": true,
+        "helpTip": "Base URL of the Test Connector API."
+      }
+    },
+    {
+      "type": "attribute",
+      "value": {
+        "name": "apiKey",
+        "displayName": "API Key",
+        "inputType": "stringOrExpression",
+        "required": false,
+        "helpTip": "API Key for authentication."
+      }
+    },
+    {
+      "type": "attribute",
+      "value": {
+        "name": "connectionTimeout",
+        "displayName": "Connection Timeout",
+        "inputType": "stringOrExpression",
+        "required": false,
+        "defaultValue": "30000",
+        "helpTip": "Connection timeout in milliseconds."
+      }
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~  Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com) All Rights Reserved.
+ ~
+ ~  WSO2 LLC. licenses this file to you under the Apache License,
+ ~  Version 2.0 (the "License"); you may not use this file except
+ ~  in compliance with the License.
+ ~  You may obtain a copy of the License at
+ ~
+ ~    http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~  Unless required by applicable law or agreed to in writing,
+ ~  software distributed under the License is distributed on an
+ ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~  KIND, either express or implied.  See the License for the
+ ~  specific language governing permissions and limitations
+ ~  under the License.
+-->
+<template name="sampleOperation" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="param1" description="First parameter"/>
+    <parameter name="param2" description="Second parameter (optional)"/>
+    <parameter name="responseVariable" description="Name of the variable to store the response"/>
+    <parameter name="overwriteBody" description="Replace message body with operation response"/>
+    <sequence>
+        <!-- Get connection properties -->
+        <property name="uri.var.baseUrl" expression="$ctx:test-connector.baseUrl"/>
+        <property name="uri.var.apiKey" expression="$ctx:test-connector.apiKey"/>
+        
+        <!-- Set operation parameters -->
+        <property name="uri.var.param1" expression="$func:param1"/>
+        <property name="uri.var.param2" expression="$func:param2"/>
+        
+        <!-- Build request payload -->
+        <payloadFactory media-type="json">
+            <format>
+                {
+                    "param1": "$1",
+                    "param2": "$2"
+                }
+            </format>
+            <args>
+                <arg evaluator="xml" expression="$ctx:uri.var.param1"/>
+                <arg evaluator="xml" expression="$ctx:uri.var.param2"/>
+            </args>
+        </payloadFactory>
+        
+        <!-- Set headers -->
+        <header name="Content-Type" value="application/json" scope="transport"/>
+        <header name="Authorization" expression="fn:concat('Bearer ', $ctx:uri.var.apiKey)" scope="transport"/>
+        
+        <!-- Make API call -->
+        <call>
+            <endpoint>
+                <http method="POST" uri-template="{uri.var.baseUrl}/api/sample"/>
+            </endpoint>
+        </call>
+    </sequence>
+</template>

@@ -1,0 +1,58 @@
+{
+  "connectorName": "test-connector",
+  "operationName": "sampleOperation",
+  "title": "Sample Operation",
+  "help": "A sample operation template",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "param1",
+        "displayName": "Parameter 1",
+        "inputType": "stringOrExpression",
+        "required": true,
+        "helpTip": "First parameter for the operation."
+      }
+    },
+    {
+      "type": "attribute",
+      "value": {
+        "name": "param2",
+        "displayName": "Parameter 2",
+        "inputType": "stringOrExpression",
+        "required": false,
+        "helpTip": "Second parameter for the operation."
+      }
+    },
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "Output",
+        "elements": [
+          {
+            "type": "attribute",
+            "value": {
+              "name": "responseVariable",
+              "displayName": "Output Variable Name",
+              "inputType": "string",
+              "defaultValue": "",
+              "required": false,
+              "helpTip": "The target variable in which the output of the operation will be stored."
+            }
+          },
+          {
+            "type": "attribute",
+            "value": {
+              "name": "overwriteBody",
+              "displayName": "Overwrite Message Body",
+              "inputType": "checkbox",
+              "defaultValue": "false",
+              "required": false,
+              "helpTip": "Replace the Message Body with the operation response."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
