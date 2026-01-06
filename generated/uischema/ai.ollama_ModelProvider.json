@@ -1,0 +1,85 @@
+{
+  "connectorName": "ai.ollama",
+  "connectionName": "ai.ollama_ModelProvider",
+  "title": "Connection Config for ai.ollama_ModelProvider connection",
+  "help": "<h1>ai.ollama_ModelProvider Connection</h1> <b>Provider represents a client for interacting with an Ollama language models.</b>",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "connectionName",
+        "displayName": "Connection Name",
+        "inputType": "string",
+        "defaultValue": "ai.ollama_ModelProvider_connection_1",
+        "required": "true",
+        "helpTip": "The name for the ai.ollama_ModelProvider connection",
+        "validation": "nameWithoutSpecialCharactors"
+      }
+    },
+    {
+      "type": "attributeGroup",
+      "value": {
+        "groupName": "General",
+        "elements": [
+          {
+            "type": "attributeGroup",
+            "value": {
+              "groupName": "Basic",
+              "elements": [
+                {
+                  "type": "attribute",
+                  "value": {
+                    "name": "modelType",
+                    "displayName": "modelType",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "validateType": "",
+                    "matchPattern": ""
+                  }
+                },{
+                  "type": "attribute",
+                  "value": {
+                    "name": "serviceUrl",
+                    "displayName": "serviceUrl",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "validateType": "",
+                    "matchPattern": ""
+                  }
+                },{
+                  "type": "attribute",
+                  "value": {
+                    "name": "modleParameters",
+                    "displayName": "modleParameters",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "validateType": "",
+                    "matchPattern": ""
+                  }
+                },{
+                  "type": "attribute",
+                  "value": {
+                    "name": "connectionConfig",
+                    "displayName": "connectionConfig",
+                    "inputType": "stringOrExpression",
+                    "defaultValue": "",
+                    "required": "true",
+                    "helpTip": "",
+                    "validateType": "",
+                    "matchPattern": ""
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

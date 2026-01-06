@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+<template name="init" onError="fault" xmlns="http://ws.apache.org/ns/synapse">
+    <parameter name="name" description="Unique name the connection is identified by"/>
+    <parameter name="connectionType" description="Connection type"/>
+    <!-- TODO: if union, the selected member type becomes a parameter-->
+    <parameter name="modelType" description=""/>
+    <parameter name="serviceUrl" description=""/>
+    <parameter name="modleParameters" description=""/>
+    <parameter name="connectionConfig" description=""/>
+    <sequence>
+        <property name="AI.OLLAMA_MODELPROVIDER_objectTypeName" value="ModelProvider"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramSize" value="4"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramFunctionName" value="init"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_param0" value="modelType"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramType0" value="string"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_param1" value="serviceUrl"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramType1" value="string"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_param2" value="modleParameters"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramType2" value="record"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_param3" value="connectionConfig"/>
+        <property name="AI.OLLAMA_MODELPROVIDER_paramType3" value="record"/>
+        
+        <class name="io.ballerina.stdlib.mi.BalConnectorConfig">
+            <property name="orgName" value="ballerinax"/>
+            <property name="moduleName" value="ai.ollama"/>
+            <property name="version" value="1"/>
+        </class>
+    </sequence>
+</template>
