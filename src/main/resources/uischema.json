@@ -1,0 +1,93 @@
+{
+  "connectorName": "test-connector",
+  "connectionName": "Test Connector",
+  "title": "Test Connector Connector",
+  "help": "this is a test connector",
+  "elements": [
+    {
+      "type": "connection",
+      "title": "Test Connector Connection",
+      "name": "init",
+      "value": {
+        "connectionName": "",
+        "baseUrl": "",
+        "apiKey": "",
+        "connectionTimeout": "30000"
+      },
+      "elements": [
+        {
+          "type": "attribute",
+          "value": {
+            "name": "connectionName",
+            "displayName": "Connection Name",
+            "inputType": "stringOrExpression",
+            "required": true,
+            "helpTip": "Unique name to identify the connection."
+          }
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "name": "baseUrl",
+            "displayName": "Base URL",
+            "inputType": "stringOrExpression",
+            "required": true,
+            "helpTip": "Base URL of the Test Connector API."
+          }
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "name": "apiKey",
+            "displayName": "API Key",
+            "inputType": "stringOrExpression",
+            "required": false,
+            "helpTip": "API Key for authentication."
+          }
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "name": "connectionTimeout",
+            "displayName": "Connection Timeout",
+            "inputType": "stringOrExpression",
+            "required": false,
+            "defaultValue": "30000",
+            "helpTip": "Connection timeout in milliseconds."
+          }
+        }
+      ]
+    },
+    {
+      "type": "operation",
+      "title": "Sample Operation",
+      "name": "sampleOperation",
+      "value": {
+        "param1": "",
+        "param2": ""
+      },
+      "elements": [
+        {
+          "type": "attribute",
+          "value": {
+            "name": "param1",
+            "displayName": "Parameter 1",
+            "inputType": "stringOrExpression",
+            "required": true,
+            "helpTip": "First parameter for the operation."
+          }
+        },
+        {
+          "type": "attribute",
+          "value": {
+            "name": "param2",
+            "displayName": "Parameter 2",
+            "inputType": "stringOrExpression",
+            "required": false,
+            "helpTip": "Second parameter for the operation."
+          }
+        }
+      ]
+    }
+  ]
+}
