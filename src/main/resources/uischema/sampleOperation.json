@@ -1,0 +1,28 @@
+{
+  "connectorName": "test-connector",
+  "operationName": "sampleOperation",
+  "title": "Sample Operation",
+  "help": "A sample operation template",
+  "elements": [
+    {
+      "type": "attribute",
+      "value": {
+        "name": "param1",
+        "displayName": "Parameter 1",
+        "inputType": "stringOrExpression",
+        "required": true,
+        "helpTip": "First parameter for the operation."
+      }
+    },
+    {
+      "type": "attribute",
+      "value": {
+        "name": "param2",
+        "displayName": "Parameter 2",
+        "inputType": "stringOrExpression",
+        "required": false,
+        "helpTip": "Second parameter for the operation."
+      }
+    }
+  ]
+}
