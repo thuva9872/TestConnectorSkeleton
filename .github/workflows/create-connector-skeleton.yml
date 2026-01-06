@@ -886,12 +886,14 @@ jobs:
           RELEASEEOF
           
           # Replace placeholders with actual GitHub Actions syntax
-          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_TOKEN/${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}/g' skeleton-output/.github/workflows/publish-release.yml
-          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_USERNAME/${{ secrets.WSO2_INTEGRATION_BOT_USERNAME }}/g' skeleton-output/.github/workflows/publish-release.yml
-          sed -i 's/SECRETS_WSO2_INTEGRATION_BOT_EMAIL/${{ secrets.WSO2_INTEGRATION_BOT_EMAIL }}/g' skeleton-output/.github/workflows/publish-release.yml
-          sed -i 's/SECRETS_NEXUS_USERNAME/${{ secrets.NEXUS_USERNAME }}/g' skeleton-output/.github/workflows/publish-release.yml
-          sed -i 's/SECRETS_NEXUS_PASSWORD/${{ secrets.NEXUS_PASSWORD }}/g' skeleton-output/.github/workflows/publish-release.yml
-          sed -i 's/ENV_VERSION_TAG/${{ env.VERSION_TAG }}/g' skeleton-output/.github/workflows/publish-release.yml
+          # Using shell variable to prevent GitHub from evaluating the expressions
+          DOLLAR='$'
+          sed -i "s/SECRETS_WSO2_INTEGRATION_BOT_TOKEN/${DOLLAR}{{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}/g" skeleton-output/.github/workflows/publish-release.yml
+          sed -i "s/SECRETS_WSO2_INTEGRATION_BOT_USERNAME/${DOLLAR}{{ secrets.WSO2_INTEGRATION_BOT_USERNAME }}/g" skeleton-output/.github/workflows/publish-release.yml
+          sed -i "s/SECRETS_WSO2_INTEGRATION_BOT_EMAIL/${DOLLAR}{{ secrets.WSO2_INTEGRATION_BOT_EMAIL }}/g" skeleton-output/.github/workflows/publish-release.yml
+          sed -i "s/SECRETS_NEXUS_USERNAME/${DOLLAR}{{ secrets.NEXUS_USERNAME }}/g" skeleton-output/.github/workflows/publish-release.yml
+          sed -i "s/SECRETS_NEXUS_PASSWORD/${DOLLAR}{{ secrets.NEXUS_PASSWORD }}/g" skeleton-output/.github/workflows/publish-release.yml
+          sed -i "s/ENV_VERSION_TAG/${DOLLAR}{{ env.VERSION_TAG }}/g" skeleton-output/.github/workflows/publish-release.yml
 
       - name: Add placeholder files for empty directories
         run: |
