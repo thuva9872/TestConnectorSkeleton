@@ -918,7 +918,8 @@ jobs:
           -->
           <connector>
               <component name="CONNECTOR_NAME_LOWER" package="org.wso2.carbon.connector">
-                  <dependency component="CONNECTOR_NAME_LOWER-config"/>
+                  <dependency component="config"/>
+                  <dependency component="operations"/>
                   <!-- Add more component dependencies here -->
               </component>
               <description>CONNECTOR_DESCRIPTION</description>
@@ -951,7 +952,7 @@ jobs:
            ~  specific language governing permissions and limitations
            ~  under the License.
           -->
-          <component name="CONNECTOR_NAME_LOWER-config" type="synapse/template">
+          <component name="config" type="synapse/template">
               <subComponents>
                   <component name="init">
                       <file>init.xml</file>
@@ -1026,7 +1027,7 @@ jobs:
            ~  specific language governing permissions and limitations
            ~  under the License.
           -->
-          <component name="CONNECTOR_NAME_LOWER-operations" type="synapse/template">
+          <component name="operations" type="synapse/template">
               <subComponents>
                   <component name="sampleOperation">
                       <file>sampleOperation.xml</file>
@@ -1063,6 +1064,8 @@ jobs:
           <template name="sampleOperation" xmlns="http://ws.apache.org/ns/synapse">
               <parameter name="param1" description="First parameter"/>
               <parameter name="param2" description="Second parameter (optional)"/>
+              <parameter name="responseVariable" description="Name of the variable to store the response"/>
+              <parameter name="overwriteBody" description="Replace message body with operation response"/>
               <sequence>
                   <!-- Get connection properties -->
                   <property name="uri.var.baseUrl" expression="$ctx:CONNECTOR_NAME_LOWER.baseUrl"/>
@@ -1187,16 +1190,40 @@ jobs:
                   "required": false,
                   "helpTip": "Second parameter for the operation."
                 }
+              },
+              {
+                "type": "attributeGroup",
+                "value": {
+                  "groupName": "Output",
+                  "elements": [
+                    {
+                      "type": "attribute",
+                      "value": {
+                        "name": "responseVariable",
+                        "displayName": "Output Variable Name",
+                        "inputType": "string",
+                        "defaultValue": "",
+                        "required": false,
+                        "helpTip": "The target variable in which the output of the operation will be stored."
+                      }
+                    },
+                    {
+                      "type": "attribute",
+                      "value": {
+                        "name": "overwriteBody",
+                        "displayName": "Overwrite Message Body",
+                        "inputType": "checkbox",
+                        "defaultValue": "false",
+                        "required": false,
+                        "helpTip": "Replace the Message Body with the operation response."
+                      }
+                    }
+                  ]
+                }
               }
             ]
           }
           SAMPLESCHEMAEOF
-
-      - name: Update connector.xml with operations dependency
-        run: |
-          # Update connector.xml to include operations component
-          sed -i 's|<dependency component="CONNECTOR_NAME_LOWER-config"/>|<dependency component="CONNECTOR_NAME_LOWER-config"/>\n            <dependency component="CONNECTOR_NAME_LOWER-operations"/>|g' skeleton-output/src/main/resources/connector.xml
-          sed -i "s/CONNECTOR_NAME_LOWER/${{ steps.vars.outputs.CONNECTOR_NAME_LOWER }}/g" skeleton-output/src/main/resources/connector.xml
 
       - name: Add placeholder files for empty directories
         run: |
