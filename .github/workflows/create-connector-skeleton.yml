@@ -165,16 +165,15 @@ jobs:
       - name: Create connector skeleton directory
         run: |
           mkdir -p skeleton-output
-          cd skeleton-output
           
           # Create directory structure
-          mkdir -p .github/workflows
-          mkdir -p .connector-store
-          mkdir -p src/main/assembly
-          mkdir -p src/main/java
-          mkdir -p src/main/resources
-          mkdir -p src/test
-          mkdir -p repository
+          mkdir -p skeleton-output/.github/workflows
+          mkdir -p skeleton-output/.connector-store
+          mkdir -p skeleton-output/src/main/assembly
+          mkdir -p skeleton-output/src/main/java
+          mkdir -p skeleton-output/src/main/resources
+          mkdir -p skeleton-output/src/test
+          mkdir -p skeleton-output/repository
 
       - name: Generate pom.xml
         run: |
@@ -897,10 +896,16 @@ jobs:
 
       - name: Add placeholder files for empty directories
         run: |
+          # Ensure directories exist and add .gitkeep files
+          mkdir -p skeleton-output/src/main/java
+          mkdir -p skeleton-output/src/main/resources
+          mkdir -p skeleton-output/src/test
+          mkdir -p skeleton-output/repository
           touch skeleton-output/src/main/java/.gitkeep
           touch skeleton-output/src/main/resources/.gitkeep
           touch skeleton-output/src/test/.gitkeep
           touch skeleton-output/repository/.gitkeep
+          echo "✅ Placeholder files added for empty directories"
 
       - name: Verify target repository exists
         id: create_repo
