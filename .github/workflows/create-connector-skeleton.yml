@@ -1103,103 +1103,94 @@ jobs:
           # Replace placeholders
           sed -i "s/CONNECTOR_NAME_LOWER/${{ steps.vars.outputs.CONNECTOR_NAME_LOWER }}/g" skeleton-output/src/main/resources/operations/sampleOperation.xml
 
-      - name: Generate uischema.json for connector UI
+      - name: Generate uischema files for connector UI
         run: |
-          cat > skeleton-output/src/main/resources/uischema.json << UISCHEMAEOF
+          mkdir -p skeleton-output/src/main/resources/uischema
+          
+          # Generate init.json for connection configuration
+          cat > skeleton-output/src/main/resources/uischema/init.json << INITSCHEMAEOF
           {
             "connectorName": "${{ steps.vars.outputs.CONNECTOR_NAME_LOWER }}",
             "connectionName": "${{ env.CONNECTOR_DISPLAY_NAME_INPUT }}",
-            "title": "${{ env.CONNECTOR_DISPLAY_NAME_INPUT }} Connector",
-            "help": "${{ env.CONNECTOR_DESCRIPTION_INPUT }}",
+            "title": "${{ env.CONNECTOR_DISPLAY_NAME_INPUT }} Connection",
+            "help": "Configure connection to ${{ env.CONNECTOR_DISPLAY_NAME_INPUT }}",
             "elements": [
               {
-                "type": "connection",
-                "title": "${{ env.CONNECTOR_DISPLAY_NAME_INPUT }} Connection",
-                "name": "init",
+                "type": "attribute",
                 "value": {
-                  "connectionName": "",
-                  "baseUrl": "",
-                  "apiKey": "",
-                  "connectionTimeout": "30000"
-                },
-                "elements": [
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "connectionName",
-                      "displayName": "Connection Name",
-                      "inputType": "stringOrExpression",
-                      "required": true,
-                      "helpTip": "Unique name to identify the connection."
-                    }
-                  },
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "baseUrl",
-                      "displayName": "Base URL",
-                      "inputType": "stringOrExpression",
-                      "required": true,
-                      "helpTip": "Base URL of the ${{ env.CONNECTOR_DISPLAY_NAME_INPUT }} API."
-                    }
-                  },
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "apiKey",
-                      "displayName": "API Key",
-                      "inputType": "stringOrExpression",
-                      "required": false,
-                      "helpTip": "API Key for authentication."
-                    }
-                  },
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "connectionTimeout",
-                      "displayName": "Connection Timeout",
-                      "inputType": "stringOrExpression",
-                      "required": false,
-                      "defaultValue": "30000",
-                      "helpTip": "Connection timeout in milliseconds."
-                    }
-                  }
-                ]
+                  "name": "connectionName",
+                  "displayName": "Connection Name",
+                  "inputType": "stringOrExpression",
+                  "required": true,
+                  "helpTip": "Unique name to identify the connection."
+                }
               },
               {
-                "type": "operation",
-                "title": "Sample Operation",
-                "name": "sampleOperation",
+                "type": "attribute",
                 "value": {
-                  "param1": "",
-                  "param2": ""
-                },
-                "elements": [
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "param1",
-                      "displayName": "Parameter 1",
-                      "inputType": "stringOrExpression",
-                      "required": true,
-                      "helpTip": "First parameter for the operation."
-                    }
-                  },
-                  {
-                    "type": "attribute",
-                    "value": {
-                      "name": "param2",
-                      "displayName": "Parameter 2",
-                      "inputType": "stringOrExpression",
-                      "required": false,
-                      "helpTip": "Second parameter for the operation."
-                    }
-                  }
-                ]
+                  "name": "baseUrl",
+                  "displayName": "Base URL",
+                  "inputType": "stringOrExpression",
+                  "required": true,
+                  "helpTip": "Base URL of the ${{ env.CONNECTOR_DISPLAY_NAME_INPUT }} API."
+                }
+              },
+              {
+                "type": "attribute",
+                "value": {
+                  "name": "apiKey",
+                  "displayName": "API Key",
+                  "inputType": "stringOrExpression",
+                  "required": false,
+                  "helpTip": "API Key for authentication."
+                }
+              },
+              {
+                "type": "attribute",
+                "value": {
+                  "name": "connectionTimeout",
+                  "displayName": "Connection Timeout",
+                  "inputType": "stringOrExpression",
+                  "required": false,
+                  "defaultValue": "30000",
+                  "helpTip": "Connection timeout in milliseconds."
+                }
               }
             ]
           }
-          UISCHEMAEOF
+          INITSCHEMAEOF
+          
+          # Generate sampleOperation.json for sample operation
+          cat > skeleton-output/src/main/resources/uischema/sampleOperation.json << SAMPLESCHEMAEOF
+          {
+            "connectorName": "${{ steps.vars.outputs.CONNECTOR_NAME_LOWER }}",
+            "operationName": "sampleOperation",
+            "title": "Sample Operation",
+            "help": "A sample operation template",
+            "elements": [
+              {
+                "type": "attribute",
+                "value": {
+                  "name": "param1",
+                  "displayName": "Parameter 1",
+                  "inputType": "stringOrExpression",
+                  "required": true,
+                  "helpTip": "First parameter for the operation."
+                }
+              },
+              {
+                "type": "attribute",
+                "value": {
+                  "name": "param2",
+                  "displayName": "Parameter 2",
+                  "inputType": "stringOrExpression",
+                  "required": false,
+                  "helpTip": "Second parameter for the operation."
+                }
+              }
+            ]
+          }
+          SAMPLESCHEMAEOF
 
       - name: Update connector.xml with operations dependency
         run: |
@@ -1349,11 +1340,12 @@ jobs:
           - \`src/main/assembly/assemble-connector.xml\` - Assembly descriptor
           - \`src/main/assembly/filter.properties\` - Filter properties
           - \`src/main/resources/connector.xml\` - Main connector configuration
-          - \`src/main/resources/uischema.json\` - UI schema for connector operations
           - \`src/main/resources/config/component.xml\` - Config component definition
           - \`src/main/resources/config/init.xml\` - Connection initialization template
           - \`src/main/resources/operations/component.xml\` - Operations component definition
           - \`src/main/resources/operations/sampleOperation.xml\` - Sample operation template
+          - \`src/main/resources/uischema/init.json\` - UI schema for connection
+          - \`src/main/resources/uischema/sampleOperation.json\` - UI schema for sample operation
           - \`.connector-store/meta.json\` - Connector metadata
           - \`.connector-store/logo.png\` - Placeholder logo
           - \`.github/workflows/pull_request_ubuntu_build.yml\` - CI workflow
@@ -1383,8 +1375,10 @@ jobs:
           │   │       ├── operations/
           │   │       │   ├── component.xml
           │   │       │   └── sampleOperation.xml
-          │   │       ├── connector.xml
-          │   │       └── uischema.json
+          │   │       ├── uischema/
+          │   │       │   ├── init.json
+          │   │       │   └── sampleOperation.json
+          │   │       └── connector.xml
           │   └── test/
           ├── .gitignore
           ├── issue_template.md
@@ -1398,7 +1392,7 @@ jobs:
           1. Review and merge this PR
           2. Customize \`init.xml\` with connector-specific connection parameters
           3. Replace \`sampleOperation.xml\` with actual connector operations
-          4. Update \`uischema.json\` to match your operations
+          4. Add corresponding UI schema files in \`uischema/\` folder for each operation
           5. Implement Java classes in \`src/main/java/\` if needed
           6. Update \`meta.json\` with operation details
           7. Replace placeholder logo with actual connector logo
