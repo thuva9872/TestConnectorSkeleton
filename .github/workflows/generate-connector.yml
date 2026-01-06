@@ -164,12 +164,25 @@ jobs:
       - name: Copy generated files to target repository
         run: |
           cd target-repo
+          OUTPUT_DIR="${{ steps.generate.outputs.output_dir }}"
           
           # Create target directory if it doesn't exist
           mkdir -p src/main/resources
           
+          # List what's in the generated folder
+          echo "📂 Contents of generated folder:"
+          ls -la "$OUTPUT_DIR/generated/"
+          
           # Copy contents from the generated folder to src/main/resources
-          cp -r "${{ steps.generate.outputs.output_dir }}/generated/"* src/main/resources/
+          cp -rL "$OUTPUT_DIR/generated/"* src/main/resources/
+          
+          # Verify lib folder was copied
+          if [ -d "src/main/resources/lib" ]; then
+            echo "✅ lib folder copied successfully"
+            ls -la src/main/resources/lib/
+          else
+            echo "⚠️ lib folder not found after copy"
+          fi
           
           echo "✅ Generated files copied to src/main/resources"
 
@@ -198,8 +211,8 @@ jobs:
         run: |
           CONNECTOR_NAME="${{ github.event.inputs.connector_name }}"
           
-          # Add all changes
-          git add .
+          # Force add all files including lib (in case .gitignore excludes it)
+          git add -f .
           
           # Check if there are changes to commit
           if git diff --cached --quiet; then
