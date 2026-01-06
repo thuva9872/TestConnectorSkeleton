@@ -19,6 +19,10 @@ on:
 jobs:
   generate-connector:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.BOT_TOKEN || secrets.BALLERINA_BOT_TOKEN }}
+      GIT_USER_NAME: ${{ secrets.BOT_USERNAME || secrets.BALLERINA_BOT_USERNAME }}
+      GIT_USER_EMAIL: ${{ secrets.BOT_EMAIL || secrets.BALLERINA_BOT_EMAIL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -108,14 +112,14 @@ jobs:
 
       - name: Configure Git Identity
         run: |
-          git config --global user.name "${{ secrets.BALLERINA_BOT_USERNAME }}"
-          git config --global user.email "${{ secrets.BALLERINA_BOT_EMAIL }}"
+          git config --global user.name "${{ env.GIT_USER_NAME }}"
+          git config --global user.email "${{ env.GIT_USER_EMAIL }}"
           echo "✅ Git identity configured"
 
       - name: Clone target repository and prepare branch
         id: prepare_branch
         env:
-          GH_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
+          GH_TOKEN: ${{ env.GH_TOKEN }}
         run: |
           TARGET_REPO="thuva9872/${{ github.event.inputs.target_repo_name }}"
           CONNECTOR_NAME="${{ github.event.inputs.connector_name }}"
@@ -230,7 +234,7 @@ jobs:
         if: ${{ steps.commit.outputs.hasChanged == 'true' }}
         working-directory: target-repo
         env:
-          GH_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
+          GH_TOKEN: ${{ env.GH_TOKEN }}
         run: |
           BRANCH_NAME="${{ steps.prepare_branch.outputs.branch_name }}"
           git push -u origin "$BRANCH_NAME"
@@ -241,7 +245,7 @@ jobs:
         if: ${{ steps.commit.outputs.hasChanged == 'true' }}
         working-directory: target-repo
         env:
-          GH_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
+          GH_TOKEN: ${{ env.GH_TOKEN }}
         run: |
           BRANCH_NAME="${{ steps.prepare_branch.outputs.branch_name }}"
           TARGET_REPO="${{ steps.prepare_branch.outputs.target_repo }}"
