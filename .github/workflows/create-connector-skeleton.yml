@@ -892,33 +892,17 @@ jobs:
           touch skeleton-output/src/test/.gitkeep
           touch skeleton-output/repository/.gitkeep
 
-      - name: Create target repository if it doesn't exist
+      - name: Verify target repository exists
         id: create_repo
         env:
           GH_TOKEN: ${{ env.GH_TOKEN }}
         run: |
           REPO_FULL_NAME="${{ steps.vars.outputs.TARGET_ORG }}/${{ steps.vars.outputs.REPO_NAME }}"
           
-          # Check if repository exists
-          if gh repo view "$REPO_FULL_NAME" --json name &>/dev/null; then
-            echo "✅ Repository already exists: $REPO_FULL_NAME"
-            echo "repo_existed=true" >> $GITHUB_OUTPUT
-            echo "repo_created=false" >> $GITHUB_OUTPUT
-          else
-            if [ "${{ env.CREATE_REPO_INPUT }}" = "true" ]; then
-              echo "📦 Creating new repository: $REPO_FULL_NAME"
-              gh repo create "$REPO_FULL_NAME" \
-                --public \
-                --description "${{ env.CONNECTOR_DESCRIPTION_INPUT }}" \
-                --license apache-2.0
-              echo "repo_existed=false" >> $GITHUB_OUTPUT
-              echo "repo_created=true" >> $GITHUB_OUTPUT
-              echo "✅ Repository created successfully"
-            else
-              echo "::error::Repository $REPO_FULL_NAME does not exist and create_repo is set to false"
-              exit 1
-            fi
-          fi
+          echo "📋 Target repository: $REPO_FULL_NAME"
+          echo "repo_existed=true" >> $GITHUB_OUTPUT
+          echo "repo_created=false" >> $GITHUB_OUTPUT
+          echo "✅ Using existing repository: $REPO_FULL_NAME"
 
       - name: Configure Git Identity
         run: |
