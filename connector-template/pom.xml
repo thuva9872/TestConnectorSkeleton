@@ -20,16 +20,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <groupId>org.wso2.integration.connector</groupId>
-  <artifactId>mi-connector-test-connector</artifactId>
+  <artifactId>mi-connector-{{CONNECTOR_NAME_LOWER}}</artifactId>
   <version>0.1.0-SNAPSHOT</version>
 
-  <name>WSO2 Carbon - Test Connector Connector</name>
+  <name>WSO2 Carbon - {{CONNECTOR_DISPLAY_NAME}} Connector</name>
   <url>http://wso2.org</url>
   <packaging>jar</packaging>
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <connector.name>test-connector</connector.name>
+    <connector.name>{{CONNECTOR_NAME_LOWER}}</connector.name>
     <synapse.version>4.0.0-wso2v186</synapse.version>
     <axiom.version>1.2.11-wso2v21</axiom.version>
     <carbon.mediation.version>4.7.160</carbon.mediation.version>
@@ -64,9 +64,9 @@
     </dependency>
   </dependencies>
   <scm>
-    <connection>scm:git:https://github.com/thuva9872/mi-connector-test-connector.git</connection>
-    <url>https://github.com/thuva9872/mi-connector-test-connector.git</url>
-    <developerConnection>scm:git:https://github.com/thuva9872/mi-connector-test-connector</developerConnection>
+    <connection>scm:git:https://github.com/{{TARGET_ORG}}/mi-connector-{{CONNECTOR_NAME_LOWER}}.git</connection>
+    <url>https://github.com/{{TARGET_ORG}}/mi-connector-{{CONNECTOR_NAME_LOWER}}.git</url>
+    <developerConnection>scm:git:https://github.com/{{TARGET_ORG}}/mi-connector-{{CONNECTOR_NAME_LOWER}}</developerConnection>
     <tag>HEAD</tag>
   </scm>
   <build>
