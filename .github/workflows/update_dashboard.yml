@@ -67,37 +67,37 @@ jobs:
               env:
                 GITHUB_TOKEN: ${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
 
-            # - name: Approve PR
-            #   if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
-            #   run: |
-            #     sleep 5
-            #     gh pr review --approve ${{ steps.createPR.outputs.prUrl }}
-            #   env:
-            #     GITHUB_TOKEN: ${{ secrets.REVIEWER_BOT_TOKEN }}
+            - name: Approve PR
+              if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
+              run: |
+                sleep 5
+                gh pr review --approve ${{ steps.createPR.outputs.prUrl }}
+              env:
+                GITHUB_TOKEN: ${{ secrets.REVIEWER_BOT_TOKEN }}
 
-            # - name: Merge PR
-            #   if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
-            #   run: |
-            #     checkCount="0"
-            #     maxAttempts="30"
-            #     attempt="0"
-            #     while [ "$checkCount" != "1" ] && [ "$attempt" -lt "$maxAttempts" ]
-            #     do
-            #       sleep 20
-            #       attempt=$((attempt + 1))
-            #       checkCount=$(gh pr status --jq '[.currentBranch.statusCheckRollup[] | select((.conclusion=="SUCCESS") and ((.name=="Build")))] | length' --json statusCheckRollup || echo "0")
-            #       failedCount=$(gh pr status --jq '[.currentBranch.statusCheckRollup[] | select((.conclusion=="FAILURE") and ((.name=="Build")))] | length' --json statusCheckRollup || echo "0")
-            #       if [[ "$failedCount" != "0" ]]
-            #       then
-            #         echo "PR Build has Failed"
-            #         exit 1
-            #       fi
-            #     done
-            #     if [ "$attempt" -ge "$maxAttempts" ]; then
-            #       echo "Timeout waiting for checks to pass"
-            #       exit 1
-            #     fi
-            #     sleep 20
-            #     gh pr merge --merge --delete-branch
-            #   env:
-            #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Merge PR
+              if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
+              run: |
+                checkCount="0"
+                maxAttempts="30"
+                attempt="0"
+                while [ "$checkCount" != "1" ] && [ "$attempt" -lt "$maxAttempts" ]
+                do
+                  sleep 20
+                  attempt=$((attempt + 1))
+                  checkCount=$(gh pr status --jq '[.currentBranch.statusCheckRollup[] | select((.conclusion=="SUCCESS") and ((.name=="Build")))] | length' --json statusCheckRollup || echo "0")
+                  failedCount=$(gh pr status --jq '[.currentBranch.statusCheckRollup[] | select((.conclusion=="FAILURE") and ((.name=="Build")))] | length' --json statusCheckRollup || echo "0")
+                  if [[ "$failedCount" != "0" ]]
+                  then
+                    echo "PR Build has Failed"
+                    exit 1
+                  fi
+                done
+                if [ "$attempt" -ge "$maxAttempts" ]; then
+                  echo "Timeout waiting for checks to pass"
+                  exit 1
+                fi
+                sleep 20
+                gh pr merge --merge --delete-branch
+              env:
+                GITHUB_TOKEN: ${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
