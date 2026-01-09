@@ -5,11 +5,11 @@ on:
     schedule:
         # Run everyday at 8:30 AM and 8:30 PM UTC
         - cron: '30 8,20 * * *'
-    push:
-        branches:
-          - main
-        paths:
-          - 'dashboard/resources/connector_list.json'
+    # push:
+    #     branches:
+    #       - main
+    #     paths:
+    #       - 'dashboard/resources/connector_list.json'
 
 jobs:
     update_dashboard:
@@ -44,6 +44,7 @@ jobs:
               id: commitFiles
               run: |
                 git add -u
+                git add dashboard/resources/connector_list.json
                 if git diff-index --quiet HEAD --;
                 then
                     echo "hasChanged=false" >> $GITHUB_OUTPUT
