@@ -33,7 +33,7 @@ const BADGE_COLOR_YELLOW = "yellow";
 // File Paths
 const README_FILE = "../README.md";
 const CONNECTOR_LIST_JSON = "resources/connector_list.json";
-const CONNECTOR_META_FILE = ".connector-store.meta.json";
+const CONNECTOR_META_FILE = ".connector-store/meta.json";
 
 // Env variable Names
 const GITHUB_TOKEN_ENV = "GITHUB_TOKEN";
