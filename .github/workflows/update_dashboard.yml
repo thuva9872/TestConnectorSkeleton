@@ -54,7 +54,7 @@ jobs:
               if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
               run: git push origin "update-connector-dashboard"
               env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
 
             - name: Create Pull Request to Update the Dashboard
               id: createPR
@@ -63,7 +63,7 @@ jobs:
                 PR_URL=$(gh pr create --title "[Automated] Update the MI Connector Dashboard" --body "Updating the MI Connector library dashboard with latest changes" --base ${{ github.ref_name }} --head update-connector-dashboard)
                 echo "prUrl=$PR_URL" >> $GITHUB_OUTPUT
               env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                GITHUB_TOKEN: ${{ secrets.WSO2_INTEGRATION_BOT_TOKEN }}
 
             # - name: Approve PR
             #   if: ${{ steps.commitFiles.outputs.hasChanged == 'true' }}
