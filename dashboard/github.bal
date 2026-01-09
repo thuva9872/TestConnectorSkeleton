@@ -50,7 +50,7 @@ function fetchAllRepositories() returns GitHubRepo[]|error {
     int perPage = 100;
 
     while true {
-        github:Repository[] repoPage = check github->/orgs/[WSO2_EXTENSIONS_ORG]/repos(
+        github:MinimalRepository[] repoPage = check github->/orgs/[WSO2_EXTENSIONS_ORG]/repos(
             per_page = perPage,
             page = page,
             'type = "all",
@@ -61,8 +61,8 @@ function fetchAllRepositories() returns GitHubRepo[]|error {
             break;
         }
 
-        foreach github:Repository repo in repoPage {
-            if repo.archived == true {
+        foreach github:MinimalRepository repo in repoPage {
+            if repo.archived is boolean && repo.archived == true {
                 continue;
             }
             if EXCLUDE_REPOS.indexOf(repo.name) != () {
@@ -74,7 +74,7 @@ function fetchAllRepositories() returns GitHubRepo[]|error {
                 full_name: repo.full_name,
                 html_url: repo.html_url,
                 description: repo.description,
-                default_branch: repo.default_branch,
+                default_branch: repo.default_branch ?: BRANCH_MAIN,
                 archived: repo.archived ?: false
             });
         }
