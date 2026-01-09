@@ -62,11 +62,9 @@ function getDashboardRow(MIConnector connector) returns string|error {
     
     string repoLink = getRepoLink(connector);
     string releaseBadge = getBadge(badges.release);
-    string buildBadge = getBadge(badges.buildStatus);
-    string issuesBadge = getBadge(badges.issues);
     string prBadge = getBadge(badges.pullRequests);
     
-    return string `|${repoLink}|${releaseBadge}|${buildBadge}|${issuesBadge}|${prBadge}|`;
+    return string `|${repoLink}|${releaseBadge}|${prBadge}|`;
 }
 
 # Sorts connectors by display name

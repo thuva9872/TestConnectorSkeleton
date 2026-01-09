@@ -14,7 +14,14 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Represents the connector store metadata from .connector-store.meta.json
+# Represents the connector store metadata from .connector-store/meta.json
+#
+# + name - The connector name
+# + displayName - The display name shown in UI
+# + product - The product type (e.g., "MI")
+# + description - The connector description
+# + category - The connector category
+# + version - The connector version
 type ConnectorMeta record {|
     string name?;
     string displayName?;
@@ -26,6 +33,14 @@ type ConnectorMeta record {|
 |};
 
 # Represents an MI Connector repository
+#
+# + name - The repository name
+# + fullName - The full repository name (org/repo)
+# + htmlUrl - The GitHub URL of the repository
+# + description - The repository description
+# + defaultBranch - The default branch name
+# + archived - Whether the repository is archived
+# + meta - The connector metadata from meta.json
 type MIConnector record {|
     string name;
     string fullName;
@@ -37,11 +52,17 @@ type MIConnector record {|
 |};
 
 # Represents a list of connectors
+#
+# + mi_connectors - Array of MI connectors
 type ConnectorList record {|
     MIConnector[] mi_connectors;
 |};
 
 # Represents a workflow badge
+#
+# + name - The badge name/label
+# + badgeUrl - The shields.io badge URL
+# + htmlUrl - The link URL when badge is clicked
 type WorkflowBadge record {|
     string name;
     string badgeUrl = NA_BADGE;
@@ -49,14 +70,22 @@ type WorkflowBadge record {|
 |};
 
 # Represents all badges for a repository
+#
+# + release - The release version badge
+# + pullRequests - The pull requests badge
 type RepoBadges record {|
     WorkflowBadge release?;
-    WorkflowBadge buildStatus?;
-    WorkflowBadge issues?;
     WorkflowBadge pullRequests?;
 |};
 
 # Represents a GitHub repository from API
+#
+# + name - The repository name
+# + full_name - The full repository name (org/repo)
+# + html_url - The GitHub URL of the repository
+# + description - The repository description
+# + default_branch - The default branch name
+# + archived - Whether the repository is archived
 type GitHubRepo record {|
     string name;
     string full_name;
@@ -68,11 +97,20 @@ type GitHubRepo record {|
 |};
 
 # Represents the connector list JSON output
+#
+# + mi_connectors - Array of connector outputs
 type ConnectorListOutput record {|
     ConnectorOutput[] mi_connectors;
 |};
 
 # Represents a connector in the output JSON
+#
+# + name - The connector name
+# + displayName - The display name shown in UI
+# + repository - The repository name
+# + description - The connector description
+# + url - The GitHub URL of the repository
+# + meta - The connector metadata
 type ConnectorOutput record {|
     string name;
     string displayName;

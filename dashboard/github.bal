@@ -166,20 +166,6 @@ function getRepoBadges(MIConnector connector) returns RepoBadges|error {
         releaseBadge.badgeUrl = NA_BADGE;
     }
     
-    // Build badge
-    WorkflowBadge buildBadge = {
-        name: "Build",
-        badgeUrl: string `${GITHUB_BADGE_URL}/actions/workflow/status/${fullName}/ci.yml?branch=${defaultBranch}&label=`,
-        htmlUrl: string `${connector.htmlUrl}/actions`
-    };
-    
-    // Issues badge
-    WorkflowBadge issuesBadge = {
-        name: "Issues",
-        badgeUrl: string `${GITHUB_BADGE_URL}/issues/${fullName}?color=${BADGE_COLOR_GREEN}&label=`,
-        htmlUrl: string `${connector.htmlUrl}/issues`
-    };
-    
     // Pull requests badge
     WorkflowBadge prBadge = {
         name: "Pull Requests",
@@ -189,8 +175,6 @@ function getRepoBadges(MIConnector connector) returns RepoBadges|error {
     
     return {
         release: releaseBadge,
-        buildStatus: buildBadge,
-        issues: issuesBadge,
         pullRequests: prBadge
     };
 }

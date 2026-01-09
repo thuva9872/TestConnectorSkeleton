@@ -53,8 +53,8 @@ function generateDashboard(MIConnector[] connectors) returns string|error {
         "",
         "These connectors enable WSO2 Micro Integrator to connect with various external services and systems.",
         "",
-        "| Name | Latest Version | Build | Issues | Pull Requests |",
-        "|:---:|:---:|:---:|:---:|:---:|"
+        "| Name | Latest Version | Pull Requests |",
+        "|:---:|:---:|:---:|"
     ];
     
     foreach MIConnector connector in connectors {
