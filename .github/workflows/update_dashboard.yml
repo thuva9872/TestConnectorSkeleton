@@ -26,8 +26,8 @@ jobs:
 
             - name: Configure Git User
               run: |
-                git config --global user.name ${{ secrets.BOT_USERNAME }}
-                git config --global user.email ${{ secrets.BOT_EMAIL }}
+                git config --global user.name ${{ secrets.WSO2_INTEGRATION_BOT_USERNAME }}
+                git config --global user.email ${{ secrets.WSO2_INTEGRATION_BOT_EMAIL }}
                 git pull
                 git checkout -b update-connector-dashboard
 
