@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       connector_name:
-        description: 'Connector name (e.g., salesforce, slack, jira) - lowercase, alphanumeric with hyphens only'
+        description: 'Connector name (e.g., salesforce, slack, jira) - lowercase, alphanumeric with hyphens and dots only'
         required: true
         type: string
       connector_display_name:
@@ -17,7 +17,7 @@ on:
         type: string
       connector_category:
         description: 'Connector category'
-        required: true
+        required: false
         default: 'Developer Tools'
         type: choice
         options:
@@ -33,7 +33,7 @@ on:
       target_org:
         description: 'Target GitHub organization'
         required: true
-        default: 'thuva9872'
+        default: 'wso2-extensions'
         type: string
       target_repo:
         description: 'Target repository name'
@@ -71,20 +71,11 @@ jobs:
         run: |
           CONNECTOR_NAME="${{ env.CONNECTOR_NAME_INPUT }}"
           
-          # Validate connector name format (lowercase, alphanumeric, hyphens only)
-          if [[ ! "$CONNECTOR_NAME" =~ ^[a-z][a-z0-9-]*[a-z0-9]$|^[a-z]$ ]]; then
-            echo "::error::Invalid connector name: '$CONNECTOR_NAME'. Must be lowercase, start with a letter, and contain only letters, numbers, and hyphens."
+          # Validate connector name format (lowercase, alphanumeric, hyphens, and dots only)
+          if [[ ! "$CONNECTOR_NAME" =~ ^[a-z][a-z0-9.-]*[a-z0-9]$|^[a-z]$ ]]; then
+            echo "::error::Invalid connector name: '$CONNECTOR_NAME'. Must be lowercase, start with a letter, and contain only letters, numbers, hyphens, and dots."
             exit 1
           fi
-          
-          # Check for reserved names
-          RESERVED_NAMES=("test" "example" "sample" "template" "skeleton")
-          for reserved in "${RESERVED_NAMES[@]}"; do
-            if [[ "$CONNECTOR_NAME" == "$reserved" ]]; then
-              echo "::error::Connector name '$CONNECTOR_NAME' is reserved and cannot be used."
-              exit 1
-            fi
-          done
           
           echo "Input validation passed"
           echo "validated=true" >> $GITHUB_OUTPUT
@@ -163,12 +154,15 @@ jobs:
           REPO_FULL_NAME="${{ steps.vars.outputs.TARGET_ORG }}/${{ steps.vars.outputs.REPO_NAME }}"
           BRANCH_NAME="${{ steps.vars.outputs.BRANCH_NAME }}"
           
-          # Clone the target repository
+          # Clone the target repository using gh cli (handles auth securely)
           echo "Cloning repository: $REPO_FULL_NAME"
-          git clone "https://x-access-token:${{ env.GH_TOKEN }}@github.com/${REPO_FULL_NAME}.git" target-repo
+          gh repo clone "$REPO_FULL_NAME" target-repo
           
           cd target-repo
           
+          # Configure git to use gh for authentication (avoids embedding tokens in URLs)
+          gh auth setup-git
+
           # Check if main branch exists, if not create it
           if ! git rev-parse --verify origin/main &>/dev/null; then
             echo "Creating initial main branch"
